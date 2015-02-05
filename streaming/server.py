@@ -10,10 +10,10 @@ time_cycle = 80;
 
 class MiThread(threading.Thread):  
     def __init__(self, ):
-        self.cap = cv2.VideoCapture(0)  
-        ret = self.cap.set(3,320)
-        ret = self.cap.set(4,240)
-        print "Constructor thread"
+        self.cap = cv2.VideoCapture(0)
+        #        ret = self.cap.set(3,180)
+        #ret = self.cap.set(4,120)
+        print("Constructor thread")
         self.stop = 0
         self.lock = threading.Lock()  
         threading.Thread.__init__(self)  
@@ -60,15 +60,17 @@ class ImageProvider(Image.ImageProvider):
         data.imageData = img
         return data
 
-status = 0
-ic = None
-t2 = MiThread()  
+if __name__ == "__main__":
+
+    status = 0
+    ic = None
+    t2 = MiThread()
 try:
 
     t2.start()
 
     ic = Ice.initialize(sys.argv)
-    adapter = ic.createObjectAdapterWithEndpoints("ImageServer", "default -h 0.0.0.0 -p 10000")
+    adapter = ic.createObjectAdapterWithEndpoints("ImageServer", "tcp -p 10000:udp -p 10000")
     object = ImageProvider(t2)
     adapter.add(object, ic.stringToIdentity("ImageServer"))
     adapter.activate()

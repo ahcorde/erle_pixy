@@ -6,8 +6,9 @@ status = 0
 ic = None
 try:
     ic = Ice.initialize(sys.argv)
-    base = ic.stringToProxy("ImageServer:default -h localhost -p 10000")
-    im = Image.ImageProviderPrx.checkedCast(base)
+    base = ic.stringToProxy("ImageServer:tcp -p 10000 -h 192.168.9.2")
+    im = Image.ImageProviderPrx.checkedCast(base).ice_twoway().ice_secure(False);
+    udp = Image.ImageProviderPrx.uncheckedCast(im.ice_datagram());
     if not im:
         raise RuntimeError("Invalid proxy")
 

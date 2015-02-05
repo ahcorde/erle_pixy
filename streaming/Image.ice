@@ -11,7 +11,8 @@ module Image{
   {
     int width; /**< %Image width [pixels] */
     int height;/**< %Image height [pixels] */
-	Data imageData;
+    int sizeCompress;
+    Data imageData;
   };
   
   interface ImageProvider
